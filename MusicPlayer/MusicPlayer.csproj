@@ -76,8 +76,11 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyConv.cs" />
-    <Compile Include="Views\Resources\CustomSlider.xaml.cs">
+    <Compile Include="Views\MainViewResources\SongsListBox.xaml.cs">
+      <DependentUpon>SongsListBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainViewResources\MyConv.cs" />
+    <Compile Include="Views\MainViewResources\CustomSlider.xaml.cs">
       <DependentUpon>CustomSlider.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -96,7 +99,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Resources\CustomSlider.xaml">
+    <Page Include="Views\MainViewResources\CustomSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainViewResources\SongsListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

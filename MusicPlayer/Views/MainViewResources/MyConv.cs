@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace MusicPlayer.Views
+namespace MusicPlayer.Views.MainViewResources
 {
     class MyConv : IValueConverter
     {

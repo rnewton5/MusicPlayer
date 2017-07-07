@@ -3,7 +3,7 @@ using System;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace MusicPlayer.Views.Resources
+namespace MusicPlayer.Views.MainViewResources
 {
     /// <summary>
     /// Interaction logic for CustomSlider.xaml
