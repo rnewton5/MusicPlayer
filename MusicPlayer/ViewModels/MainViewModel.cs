@@ -40,7 +40,6 @@ namespace MusicPlayer.ViewModels
             set { SetProperty(ref _selectedMediaItem, value); }
         }
 
-        private long _elapsedTimePercentage;
         public double ElapsedTimePercentage
         {
             get
@@ -58,7 +57,6 @@ namespace MusicPlayer.ViewModels
                     double percentage = value / 10;
                     long ticks = (long)(_player.NaturalDuration.TimeSpan.Ticks * percentage);
                     _player.Position = new TimeSpan(ticks);
-                    SetProperty(ref _elapsedTimePercentage, ticks);
                 }
             }
         }

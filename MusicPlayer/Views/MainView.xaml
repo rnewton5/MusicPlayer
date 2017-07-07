@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicPlayer.Views"
              xmlns:data="clr-namespace:MusicPlayer.Models"
+             xmlns:res="clr-namespace:MusicPlayer.Views.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}">
@@ -71,10 +72,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="325"/>
             </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="0" Background="Red">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="AUTO"/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Column="0">
 
             </DockPanel>
-            <Slider Grid.Column="1" Margin="0" VerticalAlignment="Center"  Value="{Binding ElapsedTimePercentage, Delay=10}"/>
+            <res:CustomSlider Grid.Row="1" Grid.ColumnSpan="3"/>
             <Button Grid.Column="2" Content="test" Command="{Binding PlayPauseSelectedTrackCommand}"/>
         </Grid>
     </Grid>
