@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MusicPlayer.ViewModels
 {
@@ -38,6 +40,23 @@ namespace MusicPlayer.ViewModels
         {
             get { return _selectedMediaItem; }
             set { SetProperty(ref _selectedMediaItem, value); }
+        }
+
+        private ILibraryItem _nowPlaying;
+        public ILibraryItem NowPlaying
+        {
+            get
+            {
+                return _nowPlaying;
+            }
+            set { SetProperty(ref _nowPlaying, value); }
+        }
+
+        private BitmapSource _nowPlayingAlbumArtwork;
+        public BitmapSource NowPlayingAlbumArtwork
+        {
+            get { return _nowPlayingAlbumArtwork; }
+            set { SetProperty(ref _nowPlayingAlbumArtwork, value); }
         }
 
         public double ElapsedTimePercentage
@@ -84,6 +103,10 @@ namespace MusicPlayer.ViewModels
             {
                 _player.Open(new Uri(((Song)SelectedMediaItem).FilePath));
                 _player.Play();
+                NowPlaying = SelectedMediaItem;
+                var x = _mediaLibraryFactory.Albums.Where(a => ((Album)a).AlbumArtist == ((Song)NowPlaying).AlbumArtist 
+                                                             && ((Album)a).AlbumName == ((Song)NowPlaying).AlbumName);
+                NowPlayingAlbumArtwork = Converters.Image_toBitmapSource((x.ElementAt(0) as Album).CoverArt);
             }
         }
     }
