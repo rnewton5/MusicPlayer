@@ -63,7 +63,6 @@ namespace MusicPlayer.Core
                         {
                             AlbumArtist = song.AlbumArtist,
                             AlbumName = song.AlbumName,
-                            Duration = "",  // this shit needs fixing, maybe store time in song as TimeSpan?
                             Genre = song.Genre,
                             Year = song.Year,
                             TrackCount = matches.Count(),

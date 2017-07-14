@@ -18,7 +18,6 @@ namespace MusicPlayer.Models
         public string AlbumName { get; set; }
         public string AlbumArtist { get; set; }
         public int TrackCount { get; set; }
-        public string Duration { get; set; }
         public string Genre { get; set; }
         public uint Year { get; set; }
     }

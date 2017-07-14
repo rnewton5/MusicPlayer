@@ -24,9 +24,28 @@ namespace MusicPlayer.ViewModels
         {
             get
             {
-                return _playPauseSelectedTrackCommand ?? (_playPauseSelectedTrackCommand = new RelayCommand(param => playMediaItem()));
+                return _playPauseSelectedTrackCommand ?? (_playPauseSelectedTrackCommand = new RelayCommand(param => playOrPauseMediaItem()));
             }
         }
+
+        private ICommand _playNextTrackCommand;
+        public ICommand PlayNextTrackCommand
+        {
+            get
+            {
+                return _playNextTrackCommand ?? (_playNextTrackCommand = new RelayCommand(param => playNextMediaItem()));
+            }
+        }
+
+        public ICommand _playPrevTrackCommand;
+        public ICommand PlayPrevTrackCommand
+        {
+            get
+            {
+                return _playPrevTrackCommand ?? (_playPrevTrackCommand = new RelayCommand(param => playPrevMediaItem()));
+            }
+        }
+
 
         private ObservableCollection<ILibraryItem> _libraryItems;
         public ObservableCollection<ILibraryItem> LibraryItems
@@ -45,10 +64,7 @@ namespace MusicPlayer.ViewModels
         private ILibraryItem _nowPlaying;
         public ILibraryItem NowPlaying
         {
-            get
-            {
-                return _nowPlaying;
-            }
+            get { return _nowPlaying; }
             set { SetProperty(ref _nowPlaying, value); }
         }
 
@@ -57,6 +73,13 @@ namespace MusicPlayer.ViewModels
         {
             get { return _nowPlayingAlbumArtwork; }
             set { SetProperty(ref _nowPlayingAlbumArtwork, value); }
+        }
+
+        private bool _isPlaying;
+        public bool IsPlaying
+        {
+            get { return _isPlaying; }
+            set { SetProperty(ref _isPlaying, value); }
         }
 
         public double ElapsedTimePercentage
@@ -89,28 +112,83 @@ namespace MusicPlayer.ViewModels
             string[] fileTypes = { "*.mp3" };
             _mediaLibraryFactory = new MediaLibraryFactory(directories, fileTypes);
             LibraryItems = _mediaLibraryFactory.Songs;
+            SelectedMediaItem = LibraryItems.First();
             _player = new MediaPlayer();
-            _player.ScrubbingEnabled = true;
         }
 
-        public void playMediaItem()
+        private void playPrevMediaItem()
         {
-            if (_selectedMediaItem == null)
+            if (SelectedMediaItem == null)
             {
-                _selectedMediaItem = _libraryItems.First();
+                return;
             }
-            if (_selectedMediaItem.GetType() == typeof(Song))
+            if (_player.Position.Seconds > 3)
             {
-                _player.Open(new Uri(((Song)SelectedMediaItem).FilePath));
-                _player.Play();
-                NowPlaying = SelectedMediaItem;
-                var x = _mediaLibraryFactory.Albums.Where(a => ((Album)a).AlbumArtist == ((Song)NowPlaying).AlbumArtist 
-                                                             && ((Album)a).AlbumName == ((Song)NowPlaying).AlbumName);
-                NowPlayingAlbumArtwork = Converters.Image_toBitmapSource((x.ElementAt(0) as Album).CoverArt);
+                ElapsedTimePercentage = 0;
             }
+            else
+            {
+                int index = LibraryItems.IndexOf(SelectedMediaItem) - 1;
+                if (index < 0)
+                {
+                    index = LibraryItems.Count - 1;
+                }
+                SelectedMediaItem = LibraryItems.ElementAt(index);
+                openAndPlaySong();
+            }
+        }
+
+        private void playNextMediaItem()
+        {
+            if (SelectedMediaItem == null)
+            {
+                return;
+            }
+            int index = LibraryItems.IndexOf(SelectedMediaItem) + 1;
+            if (index >= LibraryItems.Count)
+            {
+                index = 0;
+            }
+            SelectedMediaItem = LibraryItems.ElementAt(index);
+            openAndPlaySong();
+        }
+
+        private void playOrPauseMediaItem()
+        {
+            if (SelectedMediaItem == null)
+            {
+                SelectedMediaItem = LibraryItems.First();
+            }
+            if (SelectedMediaItem.GetType() == typeof(Song))
+            {
+                if (SelectedMediaItem == NowPlaying && IsPlaying)
+                {
+                    _player.Pause();
+                    IsPlaying = false;
+                }
+                else if (SelectedMediaItem == NowPlaying && !IsPlaying)
+                {
+                    _player.Play();
+                    IsPlaying = true;
+                }
+                else
+                {
+                    openAndPlaySong();
+                }
+            }
+        }
+
+        private void openAndPlaySong()
+        {
+            _player.Open(new Uri(((Song)SelectedMediaItem).FilePath));
+            _player.Play();
+            NowPlaying = SelectedMediaItem;
+            var x = _mediaLibraryFactory.Albums.Where(a => ((Album)a).AlbumArtist == ((Song)NowPlaying).AlbumArtist
+                                                         && ((Album)a).AlbumName == ((Song)NowPlaying).AlbumName);
+            NowPlayingAlbumArtwork = Converters.Image_toBitmapSource((x.ElementAt(0) as Album).CoverArt);
+            IsPlaying = true;
         }
     }
-
 
     public class MockMainViewModel : MainViewModel
     {

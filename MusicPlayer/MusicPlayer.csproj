@@ -76,6 +76,9 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainViewResources\MusicControls.xaml.cs">
+      <DependentUpon>MusicControls.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainViewResources\NowPlaying.xaml.cs">
       <DependentUpon>NowPlaying.xaml</DependentUpon>
     </Compile>
@@ -103,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainViewResources\CustomSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainViewResources\MusicControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

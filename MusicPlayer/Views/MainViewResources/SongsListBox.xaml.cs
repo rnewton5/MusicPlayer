@@ -27,7 +27,7 @@ namespace MusicPlayer.Views.MainViewResources
 
         private void GridColumnSizer(object sender, RoutedEventArgs e)
         {
-            Grid grid = (Grid)sender;
+            Grid grid = sender as Grid;
             ColumnDefinitionCollection cdc = grid.ColumnDefinitions;
             double width = grid.Width;
 
@@ -55,6 +55,8 @@ namespace MusicPlayer.Views.MainViewResources
             {
                 cdc.ElementAt(4).Width = new GridLength(50);
             }
+
+            grid.UpdateLayout();
         }
 
         /// <summary>
@@ -67,6 +69,11 @@ namespace MusicPlayer.Views.MainViewResources
                 Console.WriteLine("double click");
                 // TODO: trigger a command
             }
+        }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            hiddenButton.Command.Execute(null);
         }
     }
 }

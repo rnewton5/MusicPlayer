@@ -11,27 +11,37 @@
     <UserControl.Resources>
         <local:MyConv x:Key="cv1"/>
         <Style TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Margin" Value="0, 0"/>
-            <Style.Triggers>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="White"/>
-                </Trigger>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="Silver"/>
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Margin" Value="0, -1.75"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="teal"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <DataTemplate DataType="{x:Type data:Song}">
             <Grid Height="30"
                   Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Converter={StaticResource cv1}}"
-                  SizeChanged="GridColumnSizer">
+                  SizeChanged="GridColumnSizer"
+                  Background="Transparent">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*" MinWidth="150"/> <!--Track Name-->
-                    <ColumnDefinition Width="2*"/>                  <!--Artist Name-->
-                    <ColumnDefinition Width="2*"/>                  <!--Album Name-->
-                    <ColumnDefinition Width="*"/>                   <!--Genre-->
-                    <ColumnDefinition Width="50"/>                  <!--Year-->
-                    <ColumnDefinition Width="50"/>                  <!--Duration-->
+                    <ColumnDefinition Width="2.5*" MinWidth="150"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding TrackName}"  Grid.Column="0" VerticalAlignment="Center" Padding="10" FontWeight="Bold" FontSize="13" x:Name="TrackName_TextBlock"/>
                 <TextBlock Text="{Binding ArtistName}" Grid.Column="1" VerticalAlignment="Center" Padding="10" FontSize="13"/>
@@ -43,17 +53,25 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <ListBox x:Name="mediaItemListBox"
+    <Grid>
+        <ListBox x:Name="mediaItemListBox"
                  ItemsSource="{Binding LibraryItems}"
                  SelectedItem="{Binding SelectedMediaItem}"
                  IsSynchronizedWithCurrentItem="True"
                  HorizontalContentAlignment="Stretch"
                  AlternationCount="2"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-        <ListBox.InputBindings>
-            <KeyBinding Gesture="Space" Command="{Binding PlayPauseSelectedTrackCommand}"/>
-            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding PlayPauseSelectedTrackCommand}"/>
-        </ListBox.InputBindings>
-    </ListBox>
-
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 Background="Transparent">
+            <ListBox.InputBindings>
+                <KeyBinding Gesture="Space" Command="{Binding PlayPauseSelectedTrackCommand}"/>
+            </ListBox.InputBindings>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <Button Visibility="Hidden" x:Name="hiddenButton" Command="{Binding PlayPauseSelectedTrackCommand}"/>
+    </Grid>
+    
 </UserControl>

@@ -11,7 +11,7 @@
              DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}">
     
 
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
@@ -32,9 +32,9 @@
 
             <res:NowPlaying Margin="5 0 0 0" />
             <res:CustomSlider Grid.Row="1" Grid.ColumnSpan="2"/>
-            <Button Grid.Column="1" Content="test" Command="{Binding PlayPauseSelectedTrackCommand}"/>
+            <res:MusicControls Grid.Column="1" HorizontalAlignment="Right"/>
 
-            
+
         </Grid>
     </Grid>
 </UserControl>

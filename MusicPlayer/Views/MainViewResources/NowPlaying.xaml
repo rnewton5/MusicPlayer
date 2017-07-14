@@ -17,7 +17,7 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <Image DockPanel.Dock="Left" Source="{ Binding Path=NowPlayingAlbumArtwork}" />
+        <Image DockPanel.Dock="Left" HorizontalAlignment="Left" Source="{ Binding Path=NowPlayingAlbumArtwork}"/>
         <StackPanel>
             <TextBlock HorizontalAlignment="Center" Text="{Binding Path=NowPlaying.TrackName}" FontSize="20"/>
             <TextBlock HorizontalAlignment="Center" Text="{Binding Path=NowPlaying.ArtistName}" FontSize="16"/>
